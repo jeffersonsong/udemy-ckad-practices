@@ -1,20 +1,24 @@
 1. For the first few questions of this lab, you would have to inspect the existing ClusterRoles and ClusterRoleBindings that have been created in this cluster.
+
 ```shell
 controlplane ~ ➜  k get clusterrole,clusterrolebinding
 ```
+
 2. How many ClusterRoles do you see defined in the cluster?
 72
+
 ```shell
 controlplane ~ ➜  k get clusterrole --no-headers | wc -l
-```
 72
+```
 
 3. How many ClusterRoleBindings exist on the cluster?
 57
 
-
+```shell
 controlplane ~ ➜  k get clusterrolebinding --no-headers | wc -l
 57
+```
 
 4. What namespace is the cluster-admin clusterrole part of?
 Cluster Roles are cluster wide and not part of any namespace.
@@ -89,10 +93,7 @@ clusterrolebinding.rbac.authorization.k8s.io/michelle-node-reader created
 
 8. michelle's responsibilities are growing and now she will be responsible for storage as well. Create the required ClusterRoles and ClusterRoleBindings to allow her access to Storage.
 
-
 Get the API groups and resource names from command kubectl api-resources. Use the given spec:
-
-
 - ClusterRole: storage-admin
 - Resource: persistentvolumes
 - Resource: storageclasses
