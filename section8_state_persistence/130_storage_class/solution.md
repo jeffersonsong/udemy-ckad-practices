@@ -1,5 +1,5 @@
-1. 
-How many StorageClasses exist in the cluster right now?
+1. How many StorageClasses exist in the cluster right now?
+
 1
 
 ```shell
