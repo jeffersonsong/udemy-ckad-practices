@@ -18,14 +18,6 @@ You can exec in to the container and open the file:
 
 ```shell
 kubectl exec webapp -- cat /log/app.log
-...
-[2024-08-29 12:10:47,275] WARNING in event-simulator: USER7 Order failed as the item is OUT OF STOCK.
-[2024-08-29 12:10:47,276] INFO in event-simulator: USER1 is viewing page2
-[2024-08-29 12:10:48,276] WARNING in event-simulator: USER5 Failed to Login as the account is locked due to MANY FAILED ATTEMPTS.
-[2024-08-29 12:10:48,277] INFO in event-simulator: USER1 is viewing page1
-[2024-08-29 12:10:49,278] INFO in event-simulator: USER1 is viewing page2
-[2024-08-29 12:10:50,279] INFO in event-simulator: USER3 is viewing page2
-[2024-08-29 12:10:51,280] INFO in event-simulator: USER2 is viewing page2
 ```
 
 3. If the POD was to get deleted now, would you be able to view these logs.
@@ -79,8 +71,7 @@ k replace --force -f /tmp/kubectl-edit-569298634.yaml
 - Host Path: /pv/log
 - Reclaim Policy: Retain
 
-[Configure a Pod to Use a PersistentVolume for Storage - Create a PersistentVolume
-](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolume)
+[Configure a Pod to Use a PersistentVolume for Storage - Create a PersistentVolume](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolume)
 
 ```shell
 vi pv-log.yaml
@@ -230,11 +221,7 @@ Replace hostPath configured earlier with the newly created PersistentVolumeClaim
 
 ```shell
 k edit po webapp 
-error: pods "webapp" is invalid
-A copy of your changes has been stored to "/tmp/kubectl-edit-2253563637.yaml"
-error: Edit cancelled, no valid changes were saved.
-
-controlplane ~ ✖ k replace --force -f /tmp/kubectl-edit-2253563637.yaml
+k replace --force -f /tmp/kubectl-edit-2253563637.yaml
 pod "webapp" deleted
 pod/webapp replaced
 ```
@@ -268,6 +255,7 @@ If the command hangs, you can use CTRL + C to get back to the bash prompt OR che
 ```shell
 k delete pvc claim-log-1 
 persistentvolumeclaim "claim-log-1" deleted
+
 k get pvc
 NAME          STATUS        VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
 claim-log-1   Terminating   pv-log   100Mi      RWX                           <unset>                 7m55s
