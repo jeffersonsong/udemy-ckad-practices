@@ -104,13 +104,11 @@ Get the API groups and resource names from command kubectl api-resources. Use th
 ```shell
 controlplane ~ ➜  k create clusterrole -h
 
-controlplane ~ ➜  kubectl create clusterrole storage-admin --verb=get,list,watch --resource=persistentvolumes,storage
-classes
+controlplane ~ ➜  kubectl create clusterrole storage-admin --verb=get,list,watch --resource=persistentvolumes,storageclasses
 clusterrole.rbac.authorization.k8s.io/storage-admin created
 
 controlplane ~ ➜  k create clusterrolebinding -h
 
-controlplane ~ ➜  kubectl create clusterrolebinding michelle-storage-admin --clusterrole=storage-admin --user=michell
-e
+controlplane ~ ➜  kubectl create clusterrolebinding michelle-storage-admin --clusterrole=storage-admin --user=michelle
 clusterrolebinding.rbac.authorization.k8s.io/michelle-storage-admin created
 ```
