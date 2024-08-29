@@ -95,20 +95,13 @@ no
 
 Use the given spec:
 
-
-Role: developer
-
-Role Resources: pods
-
-Role Actions: list
-
-Role Actions: create
-
-Role Actions: delete
-
-RoleBinding: dev-user-binding
-
-RoleBinding: Bound to dev-user
+- Role: developer
+- Role Resources: pods
+- Role Actions: list
+- Role Actions: create
+- Role Actions: delete
+- RoleBinding: dev-user-binding
+- RoleBinding: Bound to dev-user
 
 ```shell
 controlplane ~ ✖ k create role -h | less
