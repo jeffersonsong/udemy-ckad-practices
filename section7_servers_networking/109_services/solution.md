@@ -5,7 +5,7 @@ In the current(default) namespace
 1
 
 ```shell
-controlplane ~ ➜  k get svc --no-headers | wc -l
+k get svc --no-headers | wc -l
 1
 ```
 
@@ -17,7 +17,7 @@ controlplane ~ ➜  k get svc --no-headers | wc -l
 ClusterIP
 
 ```shell
-controlplane ~ ➜  k get svc -o wide
+k get svc -o wide
 NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE   SELECTOR
 kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   24m   <none>
 ```
@@ -27,7 +27,7 @@ kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   24m   <none>
 6443
 
 ```shell
-controlplane ~ ➜  k describe svc kubernetes 
+k describe svc kubernetes 
 Name:              kubernetes
 Namespace:         default
 Labels:            component=apiserver
@@ -51,7 +51,7 @@ Events:            <none>
 2
 
 ```shell
-controlplane ~ ➜  k get svc kubernetes --show-labels
+k get svc kubernetes --show-labels
 NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE   LABELS
 kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   26m   component=apiserver,provider=kubernetes
 ```
@@ -67,7 +67,7 @@ In the current(default) namespace
 1
 
 ```shell
-controlplane ~ ➜  k get deploy --no-headers | wc -l
+k get deploy --no-headers | wc -l
 1
 ```
 
@@ -76,7 +76,7 @@ controlplane ~ ➜  k get deploy --no-headers | wc -l
 kodekloud/simple-webapp:red
 
 ```shell
-controlplane ~ ➜  k describe deployment simple-webapp-deployment 
+k describe deployment simple-webapp-deployment 
 ```
 
 ```yaml
@@ -108,9 +108,9 @@ No
 - Is the selector set?
 
 ```shell
-controlplane ~ ➜  vi service-definition-1.yaml
+vi service-definition-1.yaml
 
-controlplane ~ ➜  k create -f service-definition-1.yaml 
+k create -f service-definition-1.yaml 
 service/webapp-service created
 ```
 
