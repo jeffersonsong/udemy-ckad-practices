@@ -4,7 +4,7 @@ Find the current home directory by looking at the HOME environment variable.
 /root/.kube/config
 
 ```shell
-controlplane ~ ➜  ls ~/.kube/config
+ls ~/.kube/config
 /root/.kube/config
 ```
 
@@ -13,7 +13,7 @@ controlplane ~ ➜  ls ~/.kube/config
 1
 
 ```shell
-controlplane ~ ➜  k config view
+k config view
 ```
 
 ```yaml
@@ -38,7 +38,7 @@ users:
     client-key-data: DATA+OMITTED
 ```
 
-controlplane ~ ➜  cat ~/.kube/config
+cat ~/.kube/config
 
 3. How many Users are defined in the default kubeconfig file?
 
@@ -60,8 +60,8 @@ kubernetes
 4
 
 ```shell
-controlplane ~ ➜  k config -h
-controlplane ~ ➜  k config view --kubeconfig=my-kube-config
+k config -h
+k config view --kubeconfig=my-kube-config
 ```
 ```yaml
 apiVersion: v1
@@ -173,7 +173,7 @@ Once the right context is identified, use the kubectl config use-context command
 - Current context set
 
 ```shell
-controlplane ~ ➜  k config use-context research --kubeconfig=my-kube-config
+k config use-context research --kubeconfig=my-kube-config
 Switched to context "research".
 ```
 
@@ -184,8 +184,8 @@ Set the my-kube-config file as the default kubeconfig by overwriting the content
 Default kubeconfig file configured
 
 ```shell
-controlplane ~ ➜  cp my-kube-config ~/.kube/config
-controlplane ~ ➜  k config view
+cp my-kube-config ~/.kube/config
+k config view
 ```
 
 14. With the current-context set to research, we are trying to access the cluster. However something seems to be wrong. Identify and fix the issue.
@@ -196,13 +196,13 @@ Try running the kubectl get pods command and look for the error. All users certi
 Issue fixed
 
 ```shell
-controlplane ~ ➜  k get pod
+k get pod
 error: unable to read client-cert /etc/kubernetes/pki/users/dev-user/developer-user.crt for dev-user due to open /etc/kubernetes/pki/users/dev-user/developer-user.crt: no such file or directory
 
 controlplane ~ ✖ ls /etc/kubernetes/pki/users/dev-user/
 dev-user.crt  dev-user.csr  dev-user.key
 
-controlplane ~ ➜  vi ~/.kube/config
+vi ~/.kube/config
 ```
 
 From
@@ -222,6 +222,6 @@ users:
 ```
 
 ```shell
-controlplane ~ ➜  k get pod
+k get pod
 No resources found in default namespace.
 ```

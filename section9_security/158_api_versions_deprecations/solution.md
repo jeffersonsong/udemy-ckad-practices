@@ -3,7 +3,7 @@
 deploy,rs,cj,crd
 
 ```shell
-controlplane ~ ➜  k api-resources | grep "deployments\|replicasets\|cronjobs\|customresourcedefinitions"
+k api-resources | grep "deployments\|replicasets\|cronjobs\|customresourcedefinitions"
 customresourcedefinitions           crd,crds     apiextensions.k8s.io/v1           false        CustomResourceDefinition
 deployments                         deploy       apps/v1                           true         Deployment
 replicasets                         rs           apps/v1                           true         ReplicaSet
@@ -21,7 +21,7 @@ Kubernetes API version - 1.22.2
 batch
 
 ```shell
-controlplane ~ ➜  k api-resources | grep job
+k api-resources | grep job
 cronjobs                            cj           batch/v1                          true         CronJob
 jobs                                             batch/v1                          true         Job
 ```
@@ -33,7 +33,7 @@ v1
 [Kubernetes API Concepts](https://kubernetes.io/docs/reference/using-api/api-concepts/)
 
 ```shell
-controlplane ~ ➜  k proxy
+k proxy
 Starting to serve on 127.0.0.1:8001
 ```
 
@@ -65,7 +65,7 @@ Note: If you made a mistake in the config file could result in the API server be
 [API Overview - Enabling or disabling API groups](https://kubernetes.io/docs/reference/using-api/#enabling-or-disabling)
 
 ```shell
-controlplane ~ ➜  vi /etc/kubernetes/manifests/kube-apiserver.yaml
+vi /etc/kubernetes/manifests/kube-apiserver.yaml
 ```
 
 ```yaml
@@ -85,25 +85,25 @@ If unsure how to install then refer to the official k8s documentation page which
 [Install and Set Up kubectl on Linux - Install kubectl convert plugin](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin)
 
 ```shell
-controlplane ~ ➜  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/am
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/am
 d64/kubectl-convert"
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   138  100   138    0     0   2341      0 --:--:-- --:--:-- --:--:--  2379
 100 52.5M  100 52.5M    0     0  50.3M      0  0:00:01  0:00:01 --:--:--  167M
 
-controlplane ~ ➜  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert.sha256"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert.sha256"
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100   138  100   138    0     0   2384      0 --:--:-- --:--:-- --:--:--  2421
 100    64  100    64    0     0    445      0 --:--:-- --:--:-- --:--:--   445
 
-controlplane ~ ➜  echo "$(cat kubectl-convert.sha256) kubectl-convert" | sha256sum --check
+echo "$(cat kubectl-convert.sha256) kubectl-convert" | sha256sum --check
 kubectl-convert: OK
 
-controlplane ~ ➜  sudo install -o root -g root -m 0755 kubectl-convert /usr/local/bin/kubectl-convert
+sudo install -o root -g root -m 0755 kubectl-convert /usr/local/bin/kubectl-convert
 
-controlplane ~ ➜  kubectl convert --help
+kubectl convert --help
 ```
 
 7. Ingress manifest file is already given under the /root/ directory called ingress-old.yaml.
@@ -114,7 +114,7 @@ With help of the kubectl convert command, change the deprecated API version to t
 - Used the new API version?
 
 ```shell
-controlplane ~ ➜  kubectl convert -f ingress-old.yaml --output-version networking.k8s.io/v1 > ingress-new.yaml
-controlplane ~ ➜  k create -f ingress-new.yaml 
+kubectl convert -f ingress-old.yaml --output-version networking.k8s.io/v1 > ingress-new.yaml
+k create -f ingress-new.yaml 
 ingress.networking.k8s.io/ingress-space created
 ```

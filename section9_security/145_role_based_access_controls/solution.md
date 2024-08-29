@@ -8,7 +8,7 @@ Check the kube-apiserver settings.
 - [ ] RBAC
 
 ```shell
-controlplane ~ ➜  k cluster-info dump | grep authorization-mode
+k cluster-info dump | grep authorization-mode
                             "--authorization-mode=Node,RBAC",
 ```
 
@@ -16,7 +16,7 @@ controlplane ~ ➜  k cluster-info dump | grep authorization-mode
 0
 
 ```shell
-controlplane ~ ➜  k get role
+k get role
 No resources found in default namespace.
 ```
 
@@ -24,14 +24,14 @@ No resources found in default namespace.
 12
 
 ```shell
-controlplane ~ ➜  k get role -A --no-headers | wc -l
+k get role -A --no-headers | wc -l
 ```
 
 4. What are the resources the kube-proxy role in the kube-system namespace is given access to?
 configMaps
 
 ```shell
-controlplane ~ ➜  k describe role kube-proxy -n kube-system
+k describe role kube-proxy -n kube-system
 Name:         kube-proxy
 Labels:       <none>
 Annotations:  <none>
@@ -53,7 +53,7 @@ kube-proxy role can get details of config,ap object by the name kube-proxy only.
 Group: system:bootstrappers:kubeadm:default-node-token
 
 ```shell
-controlplane ~ ➜  k get rolebinding -n kube-system
+k get rolebinding -n kube-system
 NAME                                                ROLE                                                  AGE
 kube-proxy                                          Role/kube-proxy                                       7m19s
 kubeadm:kubelet-config                              Role/kubeadm:kubelet-config                           7m20s
@@ -65,7 +65,7 @@ system:controller:bootstrap-signer                  Role/system:controller:boots
 system:controller:cloud-provider                    Role/system:controller:cloud-provider                 7m20s
 system:controller:token-cleaner                     Role/system:controller:token-cleaner                  7m20s
 
-controlplane ~ ➜  k describe rolebinding kube-proxy -n kube-system
+k describe rolebinding kube-proxy -n kube-system
 Name:         kube-proxy
 Labels:       <none>
 Annotations:  <none>
@@ -86,7 +86,7 @@ Use the --as dev-user option with kubectl to run commands as the dev-user.
 dev-user does not have permissions to list pods
 
 ```shell
-controlplane ~ ➜  k auth can-i --as dev-user get pods
+k auth can-i --as dev-user get pods
 no
 ```
 
@@ -106,12 +106,12 @@ Use the given spec:
 ```shell
 controlplane ~ ✖ k create role -h | less
 
-controlplane ~ ➜  kubectl create role developer --verb=list,create,delete,get --resource=pods
+kubectl create role developer --verb=list,create,delete,get --resource=pods
 role.rbac.authorization.k8s.io/developer created
 
-controlplane ~ ➜  k create rolebinding -h | less
+k create rolebinding -h | less
 
-controlplane ~ ➜  kubectl create rolebinding dev-user-binding --role=developer --user=dev-user
+kubectl create rolebinding dev-user-binding --role=developer --user=dev-user
 rolebinding.rbac.authorization.k8s.io/dev-user-binding created
 ```
 
@@ -123,7 +123,7 @@ We have created the required roles and rolebindings, but something seems to be w
 Issue Fixed
 
 ```shell
-controlplane ~ ➜  k get role,rolebinding -n blue
+k get role,rolebinding -n blue
 NAME                                       CREATED AT
 role.rbac.authorization.k8s.io/developer   2024-08-29T17:27:14Z
 
@@ -142,10 +142,10 @@ PolicyRule:
   ---------  -----------------  --------------  -----
   pods       []                 [blue-app]      [get watch create delete]
 
-controlplane ~ ➜  k edit role developer -n blue
+k edit role developer -n blue
 role.rbac.authorization.k8s.io/developer edited
 
-controlplane ~ ➜  k auth can-i --as dev-user get pod/dark-blue-app -n blue
+k auth can-i --as dev-user get pod/dark-blue-app -n blue
 yes
 ```
 
@@ -178,7 +178,7 @@ rules:
 Remember to add api group "apps".
 
 ```shell
-controlplane ~ ➜  k edit role developer -n blue
+k edit role developer -n blue
 role.rbac.authorization.k8s.io/developer edited
 
 controlplane ~ ✖ k auth can-i --as dev-user create deployment -n blue

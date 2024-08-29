@@ -1,14 +1,14 @@
 1. For the first few questions of this lab, you would have to inspect the existing ClusterRoles and ClusterRoleBindings that have been created in this cluster.
 
 ```shell
-controlplane ~ ➜  k get clusterrole,clusterrolebinding
+k get clusterrole,clusterrolebinding
 ```
 
 2. How many ClusterRoles do you see defined in the cluster?
 72
 
 ```shell
-controlplane ~ ➜  k get clusterrole --no-headers | wc -l
+k get clusterrole --no-headers | wc -l
 72
 ```
 
@@ -16,7 +16,7 @@ controlplane ~ ➜  k get clusterrole --no-headers | wc -l
 57
 
 ```shell
-controlplane ~ ➜  k get clusterrolebinding --no-headers | wc -l
+k get clusterrolebinding --no-headers | wc -l
 57
 ```
 
@@ -24,7 +24,7 @@ controlplane ~ ➜  k get clusterrolebinding --no-headers | wc -l
 Cluster Roles are cluster wide and not part of any namespace.
 
 ```shell
-controlplane ~ ➜  k describe clusterrole cluster-admin
+k describe clusterrole cluster-admin
 Name:         cluster-admin
 Labels:       kubernetes.io/bootstrapping=rbac-defaults
 Annotations:  rbac.authorization.kubernetes.io/autoupdate: true
@@ -41,12 +41,12 @@ The ClusterRoleBinding for the role is with the same name.
 system:masters
 
 ```shell
-controlplane ~ ➜  k get clusterrolebinding | grep cluster-admin
+k get clusterrolebinding | grep cluster-admin
 cluster-admin                                                   ClusterRole/cluster-admin                                                   15m
 helm-kube-system-traefik                                        ClusterRole/cluster-admin                                                   14m
 helm-kube-system-traefik-crd                                    ClusterRole/cluster-admin                                                   14m
 
-controlplane ~ ➜  k describe clusterrolebinding cluster-admin
+k describe clusterrolebinding cluster-admin
 Name:         cluster-admin
 Labels:       kubernetes.io/bootstrapping=rbac-defaults
 Annotations:  rbac.authorization.kubernetes.io/autoupdate: true
@@ -66,7 +66,7 @@ Inspect the cluster-admin role's privileges.
 Perform any action on any resource in the cluster
 
 ```shell
-controlplane ~ ➜  k describe clusterrole cluster-admin
+k describe clusterrole cluster-admin
 Name:         cluster-admin
 Labels:       kubernetes.io/bootstrapping=rbac-defaults
 Annotations:  rbac.authorization.kubernetes.io/autoupdate: true
@@ -80,14 +80,14 @@ PolicyRule:
 7. A new user michelle joined the team. She will be focusing on the nodes in the cluster. Create the required ClusterRoles and ClusterRoleBindings so she gets access to the nodes.
 
 ```shell
-controlplane ~ ➜  k create clusterrole -h
+k create clusterrole -h
 
-controlplane ~ ➜  kubectl create clusterrole node-reader --verb=get,list,watch --resource=nodes
+kubectl create clusterrole node-reader --verb=get,list,watch --resource=nodes
 clusterrole.rbac.authorization.k8s.io/node-reader created
 
-controlplane ~ ➜  k create clusterrolebinding -h
+k create clusterrolebinding -h
 
-controlplane ~ ➜  kubectl create clusterrolebinding michelle-node-reader --clusterrole=node-reader --user=michelle
+kubectl create clusterrolebinding michelle-node-reader --clusterrole=node-reader --user=michelle
 clusterrolebinding.rbac.authorization.k8s.io/michelle-node-reader created
 ```
 
@@ -102,13 +102,13 @@ Get the API groups and resource names from command kubectl api-resources. Use th
 - ClusterRoleBinding Role: storage-admin
 
 ```shell
-controlplane ~ ➜  k create clusterrole -h
+k create clusterrole -h
 
-controlplane ~ ➜  kubectl create clusterrole storage-admin --verb=get,list,watch --resource=persistentvolumes,storageclasses
+kubectl create clusterrole storage-admin --verb=get,list,watch --resource=persistentvolumes,storageclasses
 clusterrole.rbac.authorization.k8s.io/storage-admin created
 
-controlplane ~ ➜  k create clusterrolebinding -h
+k create clusterrolebinding -h
 
-controlplane ~ ➜  kubectl create clusterrolebinding michelle-storage-admin --clusterrole=storage-admin --user=michelle
+kubectl create clusterrolebinding michelle-storage-admin --clusterrole=storage-admin --user=michelle
 clusterrolebinding.rbac.authorization.k8s.io/michelle-storage-admin created
 ```

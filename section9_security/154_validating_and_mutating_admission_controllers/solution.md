@@ -10,7 +10,7 @@ First Mutating then Validating
 - webhook-demo namespace created?
 
 ```shell
-controlplane ~ ➜  k create ns webhook-demo
+k create ns webhook-demo
 namespace/webhook-demo created
 ```
 
@@ -24,9 +24,9 @@ We have already created below cert and key for webhook server which should be us
 - Is the webhook-server-tls of the tls secret type created correctly?
 
 ```shell
-controlplane ~ ➜  k create secret -h
-controlplane ~ ➜  k create secret tls -h | less
-controlplane ~ ➜  kubectl create secret tls webhook-server-tls --cert=/root/keys/webhook-server-tls.crt --key=/root/keys/webhook-server-tls.key -n webhook-demo 
+k create secret -h
+k create secret tls -h | less
+kubectl create secret tls webhook-server-tls --cert=/root/keys/webhook-server-tls.crt --key=/root/keys/webhook-server-tls.key -n webhook-demo 
 secret/webhook-server-tls created
 ```
 
@@ -37,7 +37,7 @@ We have already added sample deployment definition under /root/webhook-deploymen
 - webhook-server deployed?
 
 ```shell
-controlplane ~ ➜  k create -f webhook-deployment.yaml 
+k create -f webhook-deployment.yaml 
 deployment.apps/webhook-server created
 ```
 
@@ -48,7 +48,7 @@ We have already added sample service definition under /root/webhook-service.yaml
 - webhook-server service created?
 
 ```shell
-controlplane ~ ➜  k create -f webhook-service.yaml 
+k create -f webhook-service.yaml 
 service/webhook-server created
 ```
 
@@ -62,10 +62,10 @@ Pod with CREATE operations
 - MutatingWebhookConfiguration deployed?
 
 ```shell
-controlplane ~ ➜  k create -f webhook-configuration.yaml 
+k create -f webhook-configuration.yaml 
 mutatingwebhookconfiguration.admissionregistration.k8s.io/demo-webhook created
 
-controlplane ~ ➜  k get mutatingwebhookconfiguration
+k get mutatingwebhookconfiguration
 NAME           WEBHOOKS   AGE
 demo-webhook   1          16s
 ```
@@ -85,10 +85,10 @@ We have added pod definition file under /root/pod-with-defaults.yaml
 pod-with-defaults pod created?
 
 ```shell
-controlplane ~ ➜  k create -f pod-with-defaults.yaml 
+k create -f pod-with-defaults.yaml 
 pod/pod-with-defaults created
 
-controlplane ~ ➜  k get pod
+k get pod
 NAME                READY   STATUS      RESTARTS   AGE
 pod-with-defaults   0/1     Completed   0          50s
 simple-webapp-1     1/1     Running     0          10m
@@ -101,7 +101,7 @@ We did not specify any securityContext values in pod definition so check out the
 runAsNonRoot: true, runAsUser: 1234
 
 ```shell
-controlplane ~ ➜  k get po pod-with-defaults -o yaml | less
+k get po pod-with-defaults -o yaml | less
 ```
 
 ```yaml
@@ -119,10 +119,10 @@ Validate securityContext after you deploy this pod
 - pod-with-override pod created?
 
 ```shell
-controlplane ~ ➜  k create -f pod-with-override.yaml 
+k create -f pod-with-override.yaml 
 pod/pod-with-override created
 
-controlplane ~ ➜  k get pod pod-with-override -o yaml | less
+k get pod pod-with-override -o yaml | less
 ```
 ```yaml
   securityContext:
@@ -138,6 +138,6 @@ Mutating webhook should reject the request as its asking to run as root user wit
 - pod-with-conflict pod not created?
 
 ```shell
-controlplane ~ ➜  k create -f pod-with-conflict.yaml 
+k create -f pod-with-conflict.yaml 
 Error from server: error when creating "pod-with-conflict.yaml": admission webhook "webhook-server.webhook-demo.svc" denied the request: runAsNonRoot specified, but runAsUser set to 0 (the root user)
 ```

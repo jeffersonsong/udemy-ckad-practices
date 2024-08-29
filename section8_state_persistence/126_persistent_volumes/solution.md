@@ -7,7 +7,7 @@ References:
 In the current(default) namespace.
 
 ```shell
-controlplane ~ ➜  k get po
+k get po
 NAME     READY   STATUS    RESTARTS   AGE
 webapp   1/1     Running   0          8s
 ```
@@ -83,9 +83,9 @@ k replace --force -f /tmp/kubectl-edit-569298634.yaml
 ](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolume)
 
 ```shell
-controlplane ~ ➜  vi pv-log.yaml
+vi pv-log.yaml
 
-controlplane ~ ➜  k apply -f pv-log.yaml 
+k apply -f pv-log.yaml 
 persistentvolume/pv-log created
 ```
 
@@ -114,9 +114,9 @@ spec:
 [Configure a Pod to Use a PersistentVolume for Storage - Create a PersistentVolumeClaim](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim)
 
 ```shell
-controlplane ~ ➜  vi claim-log-1.yaml 
+vi claim-log-1.yaml 
 
-controlplane ~ ➜  k create -f claim-log-1.yaml 
+k create -f claim-log-1.yaml 
 persistentvolumeclaim/claim-log-1 created
 ```
 
@@ -143,7 +143,7 @@ spec:
 - [ ] Created
 
 ```shell
-controlplane ~ ➜  k get pvc
+k get pvc
 NAME          STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
 claim-log-1   Pending   pv-log   0                                        <unset>                 7s
 ```
@@ -155,7 +155,7 @@ claim-log-1   Pending   pv-log   0                                        <unset
 - [ ] Bound
 
 ```shell
-controlplane ~ ➜  k get pv
+k get pv
 NAME     CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS     CLAIM                 STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
 pv-log   100Mi      RWX            Retain           Released   default/claim-log-1                  <unset>   
 ```
@@ -179,7 +179,7 @@ Delete and recreate the claim-log-1.
 ```
 controlplane ~ ✖ vi claim-log-1.yaml 
 
-controlplane ~ ➜  k replace --force -f claim-log-1.yaml 
+k replace --force -f claim-log-1.yaml 
 persistentvolumeclaim/claim-log-1 replaced
 ```
 
@@ -205,7 +205,7 @@ spec:
 - [ ] 0
 
 ```shell
-controlplane ~ ➜  k get pvc
+k get pvc
 NAME          STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
 claim-log-1   Bound    pv-log   100Mi      RWX                           <unset>                 3s
 ```
@@ -229,7 +229,7 @@ Replace hostPath configured earlier with the newly created PersistentVolumeClaim
 ```
 
 ```shell
-controlplane ~ ➜  k edit po webapp 
+k edit po webapp 
 error: pods "webapp" is invalid
 A copy of your changes has been stored to "/tmp/kubectl-edit-2253563637.yaml"
 error: Edit cancelled, no valid changes were saved.
@@ -246,7 +246,7 @@ pod/webapp replaced
 - [ ] Scrub
 
 ```shell
-controlplane ~ ➜  k get pv
+k get pv
 NAME     CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
 pv-log   100Mi      RWX            Retain           Bound    default/claim-log-1                  <unset>                          5m57s
 ```
@@ -266,9 +266,9 @@ If the command hangs, you can use CTRL + C to get back to the bash prompt OR che
 - [ ] The PV is deleted.
 
 ```shell
-controlplane ~ ➜  k delete pvc claim-log-1 
+k delete pvc claim-log-1 
 persistentvolumeclaim "claim-log-1" deleted
-controlplane ~ ➜  k get pvc
+k get pvc
 NAME          STATUS        VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
 claim-log-1   Terminating   pv-log   100Mi      RWX                           <unset>                 7m55s
 ```
@@ -285,7 +285,7 @@ Once deleted, wait for the pod to fully terminate.
 - Name: webapp
 
 ```shell
-controlplane ~ ➜  k delete po webapp
+k delete po webapp
 pod "webapp" deleted
 ```
 
@@ -303,7 +303,7 @@ pod "webapp" deleted
 - [ ] Bound
 
 ```shell
-controlplane ~ ➜  k get pv
+k get pv
 NAME     CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS     CLAIM                 STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
 pv-log   100Mi      RWX            Retain           Released   default/claim-log-1                  <unset>   
 ```

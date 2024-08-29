@@ -3,10 +3,10 @@
 1
 
 ```shell
-controlplane ~ ➜  k api-resources | grep storageclass
+k api-resources | grep storageclass
 storageclasses                      sc           storage.k8s.io/v1                 false        StorageClass
 
-controlplane ~ ➜  k get sc
+k get sc
 NAME                   PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
 local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  7m59s
 ```
@@ -16,7 +16,7 @@ local-path (default)   rancher.io/local-path   Delete          WaitForFirstConsu
 We just created a few new Storage Classes. Inspect them.
 
 ```shell
-controlplane ~ ➜  k get sc
+k get sc
 NAME                        PROVISIONER                     RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
 local-path (default)        rancher.io/local-path           Delete          WaitForFirstConsumer   false                  8m47s
 local-storage               kubernetes.io/no-provisioner    Delete          WaitForFirstConsumer   false                  13s
@@ -30,7 +30,7 @@ portworx-io-priority-high   kubernetes.io/portworx-volume   Delete          Imme
 - [ ] nfs-sc
 
 ```shell
-controlplane ~ ➜  k describe sc
+k describe sc
 Name:                  local-path
 IsDefaultClass:        Yes
 Annotations:           defaultVolumeType=local,objectset.rio.cattle.io/applied=H4sIAAAAAAAA/4yRz47UMAyHXwX53JYpnamqSBxg0V4QEhJoObuJOzVN4ypxi0areXeUMqDhwJ9j8ov9xZ+fARd+ophYAhhIKhHPVE1dqlhebjUUMHFwYODTj+jBY0pQwEyKDhXBPAOGIIrKElI+Ohpw9fokfp3p82UhMODFoocCpP9KVhNpFVkqi6qeMokz4i+5fAsUy/M2gYGpSXfJVhcv3nNwr984J+GfLQLOv/5T3sb9r6K0oM2V09pTmS5JaYbipzCbrVQ5ioGUdnmcypuJco/BgMaV4FqAx5787upP3BHTCAbqrhmak21Pw9Db5tAe20MzHJuhPnUH19m2w1cOe3fMTX+bbEEd8+USZeO8XIpgIGKwI8UMuHtWQMwD8PxRPNsLGHhHnjRr2fYdvuXgOJw/iMuAL8j6KPGRY9IHCWmdKcL1ewAAAP//KQ1Ko0kCAAA,objectset.rio.cattle.io/id=,objectset.rio.cattle.io/owner-gvk=k3s.cattle.io/v1, Kind=Addon,objectset.rio.cattle.io/owner-name=local-storage,objectset.rio.cattle.io/owner-namespace=kube-system,storageclass.kubernetes.io/is-default-class=true
@@ -74,7 +74,7 @@ Events:                <none>
 - [ ] Immediate
 
 ```shell
-controlplane ~ ➜  k get sc local-storage 
+k get sc local-storage 
 NAME            PROVISIONER                    RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
 local-storage   kubernetes.io/no-provisioner   Delete          WaitForFirstConsumer   false                  4m1s
 ```
@@ -86,7 +86,7 @@ local-storage   kubernetes.io/no-provisioner   Delete          WaitForFirstConsu
 - [ ] ceph-volue
 
 ```shell
-controlplane ~ ➜  k get sc portworx-io-priority-high
+k get sc portworx-io-priority-high
 NAME                        PROVISIONER                     RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
 portworx-io-priority-high   kubernetes.io/portworx-volume   Delete          Immediate           false                  5m42s
 ```
@@ -96,7 +96,7 @@ portworx-io-priority-high   kubernetes.io/portworx-volume   Delete          Imme
 - [ ] YES
 
 ```shell
-controlplane ~ ➜  k get pvc
+k get pvc
 No resources found in default namespace.
 ```
 
@@ -113,16 +113,16 @@ Inspect the pv local-pv for the specs.
 [Configure a Pod to Use a PersistentVolume for Storage - Create a PersistentVolumeClaim](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim)
 
 ```shell
-controlplane ~ ➜  k get pv local-pv
+k get pv local-pv
 NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS    VOLUMEATTRIBUTESCLASS   REASON   AGE
 local-pv   500Mi      RWO            Retain           Available           local-storage   <unset>                          8m44s
 
-controlplane ~ ➜  vi local-pvc.yaml
+vi local-pvc.yaml
 
-controlplane ~ ➜  k create -f local-pvc.yaml 
+k create -f local-pvc.yaml 
 persistentvolumeclaim/local-pvc created
 
-controlplane ~ ➜  k get pvc
+k get pvc
 NAME        STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS    VOLUMEATTRIBUTESCLASS   AGE
 local-pvc   Pending                                      local-storage   <unset>                 6s
 ```
@@ -153,7 +153,7 @@ Pending
 Inspect the PVC events.
 
 ```shell
-controlplane ~ ➜  k describe pvc local-pvc 
+k describe pvc local-pvc 
 Name:          local-pvc
 Namespace:     default
 StorageClass:  local-storage
@@ -186,10 +186,10 @@ Events:
 [Configure a Pod to Use a PersistentVolume for Storage - Create a Pod](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-pod)
 
 ```shell
-controlplane ~ ➜  k run nginx --image=nginx:alpine --dry-run=client -o yaml > nginx.yaml
+k run nginx --image=nginx:alpine --dry-run=client -o yaml > nginx.yaml
 controlplane ~ ✖ vi nginx.yaml 
 
-controlplane ~ ➜  k create -f nginx.yaml 
+k create -f nginx.yaml 
 pod/nginx created
 ```
 
@@ -215,7 +215,7 @@ spec:
 Bound
 
 ```shell
-controlplane ~ ➜  k get pvc local-pvc 
+k get pvc local-pvc 
 NAME        STATUS   VOLUME     CAPACITY   ACCESS MODES   STORAGECLASS    VOLUMEATTRIBUTESCLASS   AGE
 local-pvc   Bound    local-pv   500Mi      RWO            local-storage   <unset>                 11m
 ```
@@ -239,12 +239,12 @@ volumeBindingMode: WaitForFirstConsumer
 ```
 
 ```shell
-controlplane ~ ➜  vi delayed-volume-sc.yaml
+vi delayed-volume-sc.yaml
 
-controlplane ~ ➜  k create -f delayed-volume-sc.yaml 
+k create -f delayed-volume-sc.yaml 
 storageclass.storage.k8s.io/delayed-volume-sc created
 
-controlplane ~ ➜  k get sc delayed-volume-sc 
+k get sc delayed-volume-sc 
 NAME                PROVISIONER                    RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
 delayed-volume-sc   kubernetes.io/no-provisioner   Retain          WaitForFirstConsumer   false                  7s
 ```

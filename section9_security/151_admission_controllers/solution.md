@@ -17,7 +17,7 @@
 - [ ] NamespaceAutoProvision
 
 ```shell
-controlplane ~ ➜  k cluster-info dump | grep admission
+k cluster-info dump | grep admission
                             "--enable-admission-plugins=NodeRestriction",
 ```
 
@@ -30,7 +30,7 @@ kubectl run nginx --image nginx -n blue
 ```
 
 ```shell
-controlplane ~ ➜  kubectl run nginx --image nginx -n blue
+kubectl run nginx --image nginx -n blue
 Error from server (NotFound): namespaces "blue" not found
 ```
 
@@ -61,7 +61,7 @@ spec:
 - nginx pod running in blue namespace?
 
 ```shell
-controlplane ~ ➜  kubectl run nginx --image nginx -n blue
+kubectl run nginx --image nginx -n blue
 pod/nginx created
 ```
 
@@ -81,7 +81,7 @@ Note: Once you update kube-apiserver yaml file then please wait few mins for the
 DefaultStorageClass added to disable-admission-plugins?
 
 ```shell
-controlplane ~ ➜  vi /etc/kubernetes/manifests/kube-apiserver.yaml 
+vi /etc/kubernetes/manifests/kube-apiserver.yaml 
 ```
 
 ```yaml
@@ -96,6 +96,6 @@ ps -ef | grep kube-apiserver | grep admission-plugins
 ```
 
 ```shell
-controlplane ~ ➜  ps -ef | grep kube-apiserver | grep admission-plugins
+ps -ef | grep kube-apiserver | grep admission-plugins
 root       14491   14278  0 18:46 ?        00:00:03 kube-apiserver --advertise-address=192.39.26.6 --allow-privileged=true --authorization-mode=Node,RBAC --client-ca-file=/etc/kubernetes/pki/ca.crt --enable-admission-plugins=NodeRestriction,NamespaceAutoProvision --disable-admission-plugins=DefaultStorageClass --enable-bootstrap-token-auth=true --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key --etcd-servers=https://127.0.0.1:2379 --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key --requestheader-allowed-names=front-proxy-client --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt --requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User --secure-port=6443 --service-account-issuer=https://kubernetes.default.svc.cluster.local --service-account-key-file=/etc/kubernetes/pki/sa.pub --service-account-signing-key-file=/etc/kubernetes/pki/sa.key --service-cluster-ip-range=10.96.0.0/12 --tls-cert-file=/etc/kubernetes/pki/apiserver.crt --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
 ```

@@ -23,7 +23,7 @@ Note :- Make sure resources should be created successfully from the custom.yaml 
 - Deployed custom resource?
 
 ```shell
-controlplane ~ ➜  vi crd.yaml
+vi crd.yaml
 ```
 
 ```yaml
@@ -61,13 +61,13 @@ spec:
 ```
 
 ```shell
-controlplane ~ ➜  k create -f crd.yaml 
+k create -f crd.yaml 
 customresourcedefinition.apiextensions.k8s.io/internals.datasets.kodekloud.com created
 
-controlplane ~ ➜  k api-resources | grep internals
+k api-resources | grep internals
 internals                           int          datasets.kodekloud.com/v1         true         Internal
 
-controlplane ~ ➜  k create -f custom.yaml
+k create -f custom.yaml
 internal.datasets.kodekloud.com/internal-space created
 ```
 
@@ -75,7 +75,7 @@ internal.datasets.kodekloud.com/internal-space created
 image,name,replicas
 
 ```shell
-controlplane ~ ➜  k describe crd collectors.monitoring.controller
+k describe crd collectors.monitoring.controller
 ```
 
 ```yaml
@@ -98,7 +98,7 @@ Set the dataField length to 2 and access permission should be true.
 - access: true
 
 ```shell
-controlplane ~ ➜  k get crd globals.traffic.controller -o yaml
+k get crd globals.traffic.controller -o yaml
 ```
 
 ```yaml
@@ -161,7 +161,7 @@ status:
 ```
 
 ```shell
-controlplane ~ ➜  vi datacenter.yaml 
+vi datacenter.yaml 
 ```
 
 ```yaml
@@ -182,9 +182,9 @@ spec:
 gb
 
 ```shell
-controlplane ~ ➜  k api-resources | grep globals
+k api-resources | grep globals
 globals                             gb           traffic.controller/v1             true         Global
 
-controlplane ~ ➜  k create -f datacenter.yaml 
+k create -f datacenter.yaml 
 global.traffic.controller/datacenter created
 ```
