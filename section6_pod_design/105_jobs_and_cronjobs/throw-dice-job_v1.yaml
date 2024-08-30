@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: throw-dice-job
+  namespace: default
+spec:
+  backoffLimit: 20
+  completionMode: NonIndexed
+  completions: 2
+  manualSelector: false
+  parallelism: 1
+  podReplacementPolicy: TerminatingOrFailed
+  suspend: false
+  template:
+    metadata:
+      labels:
+        job-name: throw-dice-job
+    spec:
+      containers:
+      - image: kodekloud/throw-dice
+        imagePullPolicy: Always
+        name: throw-dice-job
+        resources: {}
+      restartPolicy: Never
