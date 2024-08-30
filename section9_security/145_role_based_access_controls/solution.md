@@ -104,7 +104,7 @@ Use the given spec:
 - RoleBinding: Bound to dev-user
 
 ```shell
-controlplane ~ ✖ k create role -h | less
+k create role -h | less
 
 kubectl create role developer --verb=list,create,delete,get --resource=pods
 role.rbac.authorization.k8s.io/developer created
@@ -130,10 +130,10 @@ role.rbac.authorization.k8s.io/developer   2024-08-29T17:27:14Z
 NAME                                                     ROLE             AGE
 rolebinding.rbac.authorization.k8s.io/dev-user-binding   Role/developer   12m
 
-controlplane ~ ✖ k auth can-i --as dev-user get pod/dark-blue-app -n blue
+k auth can-i --as dev-user get pod/dark-blue-app -n blue
 no
 
-controlplane ~ ✖ k describe role developer -n blue
+k describe role developer -n blue
 Name:         developer
 Labels:       <none>
 Annotations:  <none>
@@ -181,7 +181,7 @@ Remember to add api group "apps".
 k edit role developer -n blue
 role.rbac.authorization.k8s.io/developer edited
 
-controlplane ~ ✖ k auth can-i --as dev-user create deployment -n blue
+k auth can-i --as dev-user create deployment -n blue
 yes
 ```
 

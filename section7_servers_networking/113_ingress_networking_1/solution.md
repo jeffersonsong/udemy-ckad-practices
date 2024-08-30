@@ -233,7 +233,7 @@ Identify and implement the best approach to making this application available on
 ```shell
 k create ingress -h | less
 
-controlplane ~ ✖ kubectl create ingress ingress-pay-service -n critical-space --rule="/pay=pay-service:8282"
+kubectl create ingress ingress-pay-service -n critical-space --rule="/pay=pay-service:8282"
 ingress.networking.k8s.io/ingress-pay-service created
 ````
 

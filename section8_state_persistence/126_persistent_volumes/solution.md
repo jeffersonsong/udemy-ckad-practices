@@ -168,7 +168,7 @@ Delete and recreate the claim-log-1.
 - Status: Bound
 
 ```
-controlplane ~ ✖ vi claim-log-1.yaml 
+vi claim-log-1.yaml 
 
 k replace --force -f claim-log-1.yaml 
 persistentvolumeclaim/claim-log-1 replaced

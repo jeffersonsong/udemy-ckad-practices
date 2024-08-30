@@ -199,7 +199,7 @@ Issue fixed
 k get pod
 error: unable to read client-cert /etc/kubernetes/pki/users/dev-user/developer-user.crt for dev-user due to open /etc/kubernetes/pki/users/dev-user/developer-user.crt: no such file or directory
 
-controlplane ~ ✖ ls /etc/kubernetes/pki/users/dev-user/
+ls /etc/kubernetes/pki/users/dev-user/
 dev-user.crt  dev-user.csr  dev-user.key
 
 vi ~/.kube/config

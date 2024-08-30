@@ -3,7 +3,7 @@
 Note: They are in a different namespace.
 
 ```shell
-controlplane ~ ➜  k get svc -A
+k get svc -A
 NAMESPACE     NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
 app-space     default-http-backend   ClusterIP   10.98.89.196    <none>        80/TCP                   27s
 app-space     video-service          ClusterIP   10.97.108.47    <none>        8080/TCP                 28s
@@ -19,7 +19,7 @@ We will isolate all ingress related objects into its own namespace.
 - Name: ingress-nginx
 
 ```shell
-controlplane ~ ➜  k create ns ingress-nginx
+k create ns ingress-nginx
 namespace/ingress-nginx created
 ```
 
@@ -30,7 +30,7 @@ No data needs to be configured in the ConfigMap.
 - Name: ingress-nginx-controller
 
 ```shell
-controlplane ~ ➜  k create cm ingress-nginx-controller -n ingress-nginx
+k create cm ingress-nginx-controller -n ingress-nginx
 configmap/ingress-nginx-controller created
 ```
 
@@ -42,17 +42,17 @@ Use the spec provided below.
 - Name: ingress-nginx-admission
 
 ```shell
-controlplane ~ ✖ k create sa ingress-nginx -n ingress-nginx
+k create sa ingress-nginx -n ingress-nginx
 serviceaccount/ingress-nginx created
 
-controlplane ~ ➜  k create sa ingress-nginx-admission -n ingress-nginx
+k create sa ingress-nginx-admission -n ingress-nginx
 serviceaccount/ingress-nginx-admission created
 ```
 
 5. We have created the Roles, RoleBindings, ClusterRoles, and ClusterRoleBindings for the ServiceAccount. Check it out!!
 
 ```shell
-controlplane ~ ➜  k get role,rolebinding,clusterrole,clusterrolebinding -A | grep ingress-nginx
+k get role,rolebinding,clusterrole,clusterrolebinding -A | grep ingress-nginx
 ```
 
 6. Let us now deploy the Ingress Controller. Create the Kubernetes objects using the given file.
@@ -70,9 +70,9 @@ Deployed in the correct namespace.
 - NodePort: 30080
 
 ```shell
-controlplane ~ ✖ vi ingress-controller.yaml
+vi ingress-controller.yaml
 
-controlplane ~ ➜  k apply -f ingress-controller.yaml
+k apply -f ingress-controller.yaml
 deployment.apps/ingress-nginx-controller configured
 service/ingress-nginx-controller created
 ```
@@ -95,7 +95,7 @@ Ingress Created
 - Configure correct backend port for /watch service
 
 ```shell
-controlplane ~ ➜  k get svc -n app-space -o wide
+k get svc -n app-space -o wide
 NAME                   TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE   SELECTOR
 default-http-backend   ClusterIP   10.98.89.196    <none>        80/TCP     14m   app=default-backend
 video-service          ClusterIP   10.97.108.47    <none>        8080/TCP   14m   app=webapp-video
@@ -103,7 +103,7 @@ wear-service           ClusterIP   10.101.173.77   <none>        8080/TCP   14m 
 
 k create ingress -h
 
-controlplane ~ ➜  kubectl create ingress ingress-wear-watch \
+kubectl create ingress ingress-wear-watch \
   --rule="/wear*=wear-service:8080" \
   --rule="/watch*=video-service:8080" \
   --annotation nginx.ingress.kubernetes.io/rewrite-target=/ \
@@ -143,7 +143,7 @@ status:
 ```
 
 ```shell
-controlplane ~ ➜  kubectl create ingress ingress-wear-watch   --rule="/wear*=wear-service:8080"   --rule="/watch*=video-service:8080" --annotation nginx.ingress.kubernetes.io/rewrite-target=/ -n app-space
+kubectl create ingress ingress-wear-watch   --rule="/wear*=wear-service:8080"   --rule="/watch*=video-service:8080" --annotation nginx.ingress.kubernetes.io/rewrite-target=/ -n app-space
 ingress.networking.k8s.io/ingress-wear-watch created
 ```
 

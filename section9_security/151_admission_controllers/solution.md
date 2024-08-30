@@ -43,7 +43,7 @@ Note: Once you update kube-apiserver yaml file, please wait for a few minutes fo
 NamespaceAutoProvision admission controller enabled on kube-apiserver?
 
 ```shell
-controlplane ~ ✖ vi /etc/kubernetes/manifests/kube-apiserver.yaml
+vi /etc/kubernetes/manifests/kube-apiserver.yaml
 ```
 
 ```yaml

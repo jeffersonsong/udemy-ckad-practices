@@ -187,7 +187,7 @@ Events:
 
 ```shell
 k run nginx --image=nginx:alpine --dry-run=client -o yaml > nginx.yaml
-controlplane ~ ✖ vi nginx.yaml 
+vi nginx.yaml 
 
 k create -f nginx.yaml 
 pod/nginx created
