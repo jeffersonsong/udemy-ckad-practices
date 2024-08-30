@@ -27,6 +27,12 @@ spec:
       httpGet:
         path: /ready
         port: 8080
+    livenessProbe:
+      httpGet:
+        path: /live
+        port: 8080
+      periodSeconds: 1
+      initialDelaySeconds: 80        
   dnsPolicy: ClusterFirst
   enableServiceLinks: true
   nodeName: controlplane

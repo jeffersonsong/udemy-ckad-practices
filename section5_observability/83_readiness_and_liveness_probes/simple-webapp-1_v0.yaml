@@ -20,12 +20,6 @@ spec:
     - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
       name: kube-api-access-4chft
       readOnly: true
-    livenessProbe:
-      httpGet:
-        path: /live
-        port: 8080
-      periodSeconds: 1
-      initialDelaySeconds: 80          
   dnsPolicy: ClusterFirst
   enableServiceLinks: true
   nodeName: controlplane
