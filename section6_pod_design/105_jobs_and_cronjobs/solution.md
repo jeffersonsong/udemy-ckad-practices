@@ -117,7 +117,7 @@ k get job -w
 6. How many attempts did it take to complete the job this time?
 
 ```shell
-controlplane ~ ✖ k describe job throw-dice-job 
+k describe job throw-dice-job 
 
 Pods Statuses:    0 Active (0 Ready) / 2 Succeeded / 3 Failed
 ```
@@ -173,7 +173,7 @@ k get job -w
 8. Notice how quickly that finished.
 
 ```shell
-controlplane ~ ✖ k describe job throw-dice-job 
+k describe job throw-dice-job 
 
 Pods Statuses:    0 Active (0 Ready) / 3 Succeeded / 4 Failed
 ```

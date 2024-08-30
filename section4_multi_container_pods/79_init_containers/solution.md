@@ -134,7 +134,7 @@ spec:
 ```
 
 ```shell
-controlplane ~ ✖ k replace --force -f /tmp/kubectl-edit-66158036.yaml
+k replace --force -f /tmp/kubectl-edit-66158036.yaml
 ```
 
 9. A new application orange is deployed. There is something wrong with it. Identify and fix the issue.
@@ -203,7 +203,7 @@ k edit po orange
 ```
 
 ```shell
-controlplane ~ ✖ k replace --force -f /tmp/kubectl-edit-534011094.yaml
+k replace --force -f /tmp/kubectl-edit-534011094.yaml
 pod "orange" deleted
 pod/orange replaced
 ```
