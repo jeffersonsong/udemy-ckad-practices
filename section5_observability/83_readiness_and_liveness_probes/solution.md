@@ -175,7 +175,7 @@ spec:
 k replace --force -f /tmp/kubectl-edit-835078268.yaml
 ```
 
-13. Freeze the application again and notice what happens. When a POD freezes, it would be restarted automatically.
+1.  Freeze the application again and notice what happens. When a POD freezes, it would be restarted automatically.
 
 Try it by accessing url /freeze of the application in your browser. Then check the status of POD. Run the curl-test to see if users are impacted.
 
