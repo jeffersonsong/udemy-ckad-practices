@@ -47,12 +47,7 @@ Spec is given on the below. Do not modify any other properties of the pod.
 ```yaml
 spec:
   containers:
-  - env:
-    - name: APP_START_DELAY
-      value: "80"
-    image: kodekloud/webapp-delayed-start
-    imagePullPolicy: Always
-    name: simple-webapp
+  - name: simple-webapp
     readinessProbe:
       httpGet:
         path: /ready
