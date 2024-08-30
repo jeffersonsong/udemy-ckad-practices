@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2024-08-30T11:49:27Z"
+  name: webapp-service
+  namespace: default
+  resourceVersion: "685"
+  uid: 33468371-69f2-464a-96e7-2c6503a5ef21
+spec:
+  clusterIP: 10.99.132.193
+  clusterIPs:
+  - 10.99.132.193
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 30080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    name: simple-webapp
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
