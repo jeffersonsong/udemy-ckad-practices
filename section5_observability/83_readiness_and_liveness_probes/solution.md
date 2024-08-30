@@ -142,6 +142,9 @@ k edit po simple-webapp-1
 ```
 
 ```yaml
+spec:
+  containers:
+  - name: simple-webapp
     livenessProbe:
       httpGet:
         path: /live
@@ -157,6 +160,9 @@ k edit po simple-webapp-2
 ```
 
 ```yaml
+spec:
+  containers:
+  - name: simple-webapp
     livenessProbe:
       httpGet:
         path: /live
