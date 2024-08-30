@@ -25,7 +25,7 @@ Run the kubectl create -f . command from within the downloaded repository.
 ```shell
 cd kubernetes-metrics-server/
 
-controlplane kubernetes-metrics-server on  master ➜  kubectl create -f .
+kubectl create -f .
 clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
 clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
 rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
@@ -42,7 +42,7 @@ clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
 Run the kubectl top node command and wait for a valid output.
 
 ```shell
-controlplane kubernetes-metrics-server on  master ➜  k get svc,deploy -n kube-system
+k get svc,deploy -n kube-system
 NAME                     TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                  AGE
 service/kube-dns         ClusterIP   10.96.0.10     <none>        53/UDP,53/TCP,9153/TCP   9m17s
 service/metrics-server   ClusterIP   10.96.133.50   <none>        443/TCP                  83s
@@ -51,7 +51,7 @@ NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/coredns          2/2     2            2           9m17s
 deployment.apps/metrics-server   1/1     1            1           83s
 
-controlplane kubernetes-metrics-server on  master ➜  k top node
+k top node
 NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
 controlplane   270m         0%     1126Mi          0%        
 node01         23m          0%     303Mi           0%   
@@ -69,7 +69,7 @@ controlplane
 rabbit
 
 ```shell
-controlplane kubernetes-metrics-server on  master ➜  k top pod
+k top pod
 NAME       CPU(cores)   MEMORY(bytes)   
 elephant   14m          32Mi            
 lion       1m           18Mi            

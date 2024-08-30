@@ -3,7 +3,7 @@
 5
 
 ```shell
-controlplane ~ ➜  k describe node node01
+k describe node node01
 Name:               node01
 Roles:              <none>
 Labels:             beta.kubernetes.io/arch=amd64
@@ -22,7 +22,7 @@ amd64
 ```shell
 k label node -h
 
-controlplane ~ ➜  kubectl label nodes node01 color=blue
+kubectl label nodes node01 color=blue
 node/node01 labeled
 ```
 
@@ -33,7 +33,7 @@ node/node01 labeled
 - Image: nginx
 
 ```shell
-controlplane ~ ➜  k create deploy blue --image=nginx --replicas=3
+k create deploy blue --image=nginx --replicas=3
 deployment.apps/blue created
 ```
 
@@ -44,11 +44,11 @@ controlplane and node01
 Make sure to check taints on both nodes!
 
 ```shell
-controlplane ~ ➜  k get deploy -o wide
+k get deploy -o wide
 NAME   READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR
 blue   3/3     3            3           47s   nginx        nginx    app=blue
 
-controlplane ~ ➜  k get po -o wide
+k get po -o wide
 NAME                   READY   STATUS    RESTARTS   AGE   IP           NODE           NOMINATED NODE   READINESS GATES
 blue-c4566ffc8-jxfdt   1/1     Running   0          56s   10.244.0.4   controlplane   <none>           <none>
 blue-c4566ffc8-n2plh   1/1     Running   0          56s   10.244.1.2   node01         <none>           <none>
@@ -73,7 +73,7 @@ Taints:             <none>
 [Schedule a Pod using required node affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)
 
 ```shell
-controlplane ~ ➜  k edit deploy blue
+k edit deploy blue
 deployment.apps/blue edited
 ```
 
@@ -95,7 +95,7 @@ spec:
 7. Which nodes are the pods placed on now?
 
 ```shell
-controlplane ~ ➜  k get po -o wide
+k get po -o wide
 NAME                   READY   STATUS    RESTARTS   AGE   IP           NODE     NOMINATED NODE   READINESS GATES
 blue-884849b5b-kk5z7   1/1     Running   0          35s   10.244.1.5   node01   <none>           <none>
 blue-884849b5b-lzffq   1/1     Running   0          40s   10.244.1.4   node01   <none>           <none>
@@ -113,7 +113,7 @@ Use the label key - node-role.kubernetes.io/control-plane - which is already set
 - Use the right operator
 
 ```shell
-controlplane ~ ➜  k create deploy red --image=nginx --replicas=2 --dry-run=client -o yaml > red-deployment.yaml
+k create deploy red --image=nginx --replicas=2 --dry-run=client -o yaml > red-deployment.yaml
 
 vi red-deployment.yaml
 ```
@@ -153,6 +153,6 @@ status: {}
 ```
 
 ```shell
-controlplane ~ ➜  k apply -f red-deployment.yaml 
+k apply -f red-deployment.yaml 
 deployment.apps/red created
 ```

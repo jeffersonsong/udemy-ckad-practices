@@ -130,7 +130,7 @@ k edit po webapp-color
 ```
 
 ```shell
-controlplane ~ ✖ k replace --force -f /tmp/kubectl-edit-1711318721.yaml
+k replace --force -f /tmp/kubectl-edit-1711318721.yaml
 pod "webapp-color" deleted
 pod/webapp-color replaced
 ```
