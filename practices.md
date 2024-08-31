@@ -1,7 +1,7 @@
 # Kubernetes Certified Application Developer (CKAD) with Tests - Practice Tests
 
 ## Section 2: Core Concepts
-### [Pods](https://uklabs.kodekloud.com/topic/pods-4/)
+### [19. Pods](https://uklabs.kodekloud.com/topic/pods-4/)
 
 ```shell
 k get po
@@ -18,7 +18,7 @@ k replace --force -f /tmp/kubectl-edit-3603704817.yaml
 k delete pod webapp
 ```
 
-### [ReplicaSets](https://uklabs.kodekloud.com/topic/replicasets-2/)
+### [23. ReplicaSets](https://uklabs.kodekloud.com/topic/replicasets-2/)
 
 ```shell
 k get rs
@@ -28,7 +28,7 @@ k edit rs new-replica-set
 k delete rs replicaset-1
 ```
 
-### [Deployments](https://uklabs.kodekloud.com/topic/deployments-5/)
+### [25. Deployments](https://uklabs.kodekloud.com/topic/deployments-5/)
 
 ```shell
 k get deploy
@@ -38,14 +38,14 @@ k scale deploy frontend-v2 --replicas=1
 k delete deploy frontend
 ```
 
-### [Namespaces](https://uklabs.kodekloud.com/topic/namespaces-3/)
+### [30. Namespaces](https://uklabs.kodekloud.com/topic/namespaces-3/)
 
 ```shell
 k get ns
 k create ns dev-ns
 ```
 
-### [Imperative Commands](https://uklabs.kodekloud.com/topic/imperative-commands/)
+### [33. Imperative Commands](https://uklabs.kodekloud.com/topic/imperative-commands/)
 
 ```shell
 k create ns dev-ns
@@ -59,7 +59,7 @@ k expose pod redis --port=6379 --name=redis-service --type=ClusterIP
 ```
 
 ## Section 3: Configuration
-### [Docker Images](https://uklabs.kodekloud.com/topic/practice-test-docker-images-2/)
+### [38. Docker Images](https://uklabs.kodekloud.com/topic/practice-test-docker-images-2/)
 
 ```shell
 docker image ls
@@ -70,10 +70,10 @@ docker ps
 docker exec -it 94db58651d02 cat /etc/os-release
 ```
 
-### [Commands and Arguments](https://uklabs.kodekloud.com/topic/commands-and-arguments/)
+### [42. Commands and Arguments](https://uklabs.kodekloud.com/topic/commands-and-arguments/)
 
 
-### [ConfigMaps](https://uklabs.kodekloud.com/topic/configmaps-2/)
+### [46. ConfigMaps](https://uklabs.kodekloud.com/topic/configmaps-2/)
 
 [Configure a Pod to Use a ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 
@@ -98,7 +98,7 @@ kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue --f
         name: webapp-config-map
 ```
 
-### [Secrets](https://uklabs.kodekloud.com/topic/secrets-4/)
+### [51. Secrets](https://uklabs.kodekloud.com/topic/secrets-4/)
 
 [Configure all key-value pairs in a Secret as container environment variables](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables)
 
@@ -116,7 +116,7 @@ kubectl create secret generic db-secret --from-literal=DB_Host=sql01 \
         name: db-secret
 ```
 
-### [Security Contexts](https://uklabs.kodekloud.com/topic/security-contexts-3/)
+### [56. Security Contexts](https://uklabs.kodekloud.com/topic/security-contexts-3/)
 
 [Set the security context for a Pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod)
 
@@ -136,7 +136,7 @@ spec:
         add: ["SYS_TIME"]    
 ```
 
-### [Service Acccount](https://uklabs.kodekloud.com/topic/service-account-2/)
+### [59. Service Acccount](https://uklabs.kodekloud.com/topic/service-account-2/)
 
 k create sa dashboard-sa
 kubectl create token dashboard-sa
@@ -152,7 +152,7 @@ spec:
 ```
 
 
-### [Resource Requirements](https://uklabs.kodekloud.com/topic/resource-limits-2/)
+### [62. Resource Requirements](https://uklabs.kodekloud.com/topic/resource-limits-2/)
 ```yaml
   containers:
   - args:
@@ -174,7 +174,7 @@ spec:
         memory: 5Mi
 ```
 
-### [Taints and Toleration](https://uklabs.kodekloud.com/topic/taints-and-tolerations-3/)
+### [65. Taints and Toleration](https://uklabs.kodekloud.com/topic/taints-and-tolerations-3/)
 
 [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
 
@@ -201,7 +201,7 @@ spec:
     effect: "NoSchedule"
 ```
 
-### [Node Affinity](https://uklabs.kodekloud.com/topic/node-affinity-3/)
+### [69. Node Affinity](https://uklabs.kodekloud.com/topic/node-affinity-3/)
 [Schedule a Pod using required node affinity](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)
 
 ```shell
@@ -251,14 +251,13 @@ spec:
 ```
 
 ## Section 4: Multi-Container Pods
-### [Multi-Container Pods](https://uklabs.kodekloud.com/topic/multi-container-pods-3/)
+### [77. Multi-Container Pods](https://uklabs.kodekloud.com/topic/multi-container-pods-3/)
     - [Pods with multiple containers](https://kubernetes.io/docs/concepts/workloads/pods/#how-pods-manage-multiple-containers)
     - [Communicate Between Containers in the Same Pod Using a Shared Volume](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/)
 
-### [Init Containers](https://uklabs.kodekloud.com/topic/init-containers-3/)
+### [79. Init Containers](https://uklabs.kodekloud.com/topic/init-containers-3/)
   
 [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
-
 
 ```yaml
 spec:
@@ -272,7 +271,7 @@ spec:
 
 ## Section 5: Observability
 
-### [Readiness and Liveness Probes](https://uklabs.kodekloud.com/topic/readiness-probes-2/)
+### [83. Readiness and Liveness Probes](https://uklabs.kodekloud.com/topic/readiness-probes-2/)
 
 [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
 
@@ -292,13 +291,13 @@ spec:
       initialDelaySeconds: 80
 ```
 
-### [Container Logging](https://uklabs.kodekloud.com/topic/logging-2/)
+### [86. Container Logging](https://uklabs.kodekloud.com/topic/logging-2/)
 
 ```shell
 k logs webapp-2
 ```
 
-### [Monitoring](https://uklabs.kodekloud.com/topic/monitoring-2/)
+### [89. Monitoring](https://uklabs.kodekloud.com/topic/monitoring-2/)
 
 ```shell
 k top node
@@ -306,7 +305,7 @@ k top pod
 ```
 
 ## Section 6: POD Design
-### [Labels, Selectors and Annotations](https://uklabs.kodekloud.com/topic/labels-and-selectors-2/)
+### [92. Labels, Selectors and Annotations](https://uklabs.kodekloud.com/topic/labels-and-selectors-2/)
 ```shell
 k get all --selector="env=prod"
 k get po --selector="env=prod,bu=finance,tier=frontend" 
@@ -333,13 +332,27 @@ spec:
          image: nginx
 ```
 
-### [Rolling Updates & Rollbacks](https://uklabs.kodekloud.com/topic/rolling-updates-rollbacks-2/)
+### [97. Rolling Updates & Rollbacks](https://uklabs.kodekloud.com/topic/rolling-updates-rollbacks-2/)
+
+kubectl set image deployment/frontend simple-webapp=kodekloud/webapp-color:v2
+
+```yaml
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+```
+
+```yaml
+  strategy:
+    type: Recreate
+```
+
+### [101. Deployment strategies](https://uklabs.kodekloud.com/topic/practice-test-de…ent-strategies-2/)
 
 
-### [Deployment strategies](https://uklabs.kodekloud.com/topic/practice-test-de…ent-strategies-2/)
-
-
-### [Jobs & CronJobs](https://uklabs.kodekloud.com/topic/jobs-and-cronjobs/)
+### [105. Jobs & CronJobs](https://uklabs.kodekloud.com/topic/jobs-and-cronjobs/)
     - [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
     - [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
 
@@ -374,7 +387,7 @@ spec:
 
 
 ## Section 7. Services & Networking
-### [Services](https://uklabs.kodekloud.com/topic/kubernetes-services/)
+### [109. Services](https://uklabs.kodekloud.com/topic/kubernetes-services/)
 
 ```shell
 k get svc
@@ -383,7 +396,7 @@ k get svc kubernetes --show-labels
 k describe svc kubernetes 
 ```
 
-### [Ingress Networking - 1](https://uklabs.kodekloud.com/topic/ingress-networking-1/)
+### [113. Ingress Networking - 1](https://uklabs.kodekloud.com/topic/ingress-networking-1/)
     - [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
        - [Ingress - Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types)
        - [Ingress - The Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource)
@@ -428,9 +441,9 @@ status:
   loadBalancer: {}
 ```
 
-### [Ingress Networking - 2](https://uklabs.kodekloud.com/topic/ingress-networking-2/)
+### [116. Ingress Networking - 2](https://uklabs.kodekloud.com/topic/ingress-networking-2/)
 
-### [Network Policies](https://uklabs.kodekloud.com/topic/network-policies-4/)
+### [120. Network Policies](https://uklabs.kodekloud.com/topic/network-policies-4/)
 [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
 
 ```shell
@@ -469,7 +482,7 @@ spec:
 ```
 
 ## Section 8. State Persistence
-### [Persistent Volumes](https://uklabs.kodekloud.com/topic/persistent-volumes-5/)
+### [126. Persistent Volumes](https://uklabs.kodekloud.com/topic/persistent-volumes-5/)
 
 [Configure a Pod to Use a PersistentVolume for Storage](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/)
 [Volumes - hostPath configuration example](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath-configuration-example)
@@ -547,7 +560,7 @@ spec:
 ```
 
   
-### [Storage Class](https://uklabs.kodekloud.com/topic/storage-class-2/)
+### [130. Storage Class](https://uklabs.kodekloud.com/topic/storage-class-2/)
 
 
 [Configure a Pod to Use a PersistentVolume for Storage - Create a PersistentVolumeClaim](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim)
@@ -610,7 +623,7 @@ volumeBindingMode: WaitForFirstConsumer
 ```
 
 ## Section 9: Security
-### [KubeConfig](https://uklabs.kodekloud.com/topic/practice-test-kubeconfig-4/)
+### [140. KubeConfig](https://uklabs.kodekloud.com/topic/practice-test-kubeconfig-4/)
 
 ```shell
 ls ~/.kube/config
@@ -619,7 +632,7 @@ k config view --kubeconfig=my-kube-config
 k config use-context research --kubeconfig=my-kube-config
 ```
 
-### [Role Based Access Controls](https://uklabs.kodekloud.com/topic/practice-test-ro…ccess-controls-4/)
+### [145. Role Based Access Controls](https://uklabs.kodekloud.com/topic/practice-test-ro…ccess-controls-4/)
 
 ```shell
 k cluster-info dump | grep authorization-mode
@@ -661,7 +674,7 @@ rules:
 ```
 
 
-### [Cluster Roles](https://uklabs.kodekloud.com/topic/practice-test-cluster-roles-4/)
+### [148. Cluster Roles](https://uklabs.kodekloud.com/topic/practice-test-cluster-roles-4/)
 
 ```shell
 k get clusterrole,clusterrolebinding
@@ -671,7 +684,7 @@ kubectl create clusterrole storage-admin --verb=get,list,watch --resource=persis
 kubectl create clusterrolebinding michelle-storage-admin --clusterrole=storage-admin --user=michelle
 ```
 
-### [Admission Controllers](https://uklabs.kodekloud.com/topic/labs-admission-controllers-5/)
+### [151. Admission Controllers](https://uklabs.kodekloud.com/topic/labs-admission-controllers-5/)
     - [Admission Controllers Reference](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/)
 
 ```shell
@@ -695,7 +708,7 @@ spec:
 ps -ef | grep kube-apiserver | grep admission-plugins
 ```
 
-### [Validating and Mutating Admission Controllers](https://uklabs.kodekloud.com/topic/labs-validating-and-mutating-admission-controllers-5/)
+### [154. Validating and Mutating Admission Controllers](https://uklabs.kodekloud.com/topic/labs-validating-and-mutating-admission-controllers-5/)
     - [Dynamic Admission Control](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
 
 ```shell
@@ -729,7 +742,7 @@ k create -f webhook-configuration.yaml
 k get mutatingwebhookconfiguration
 ```
 
-### [API Versions/Deprecations](https://uklabs.kodekloud.com/topic/lab-api-versions-deprecations-2/)
+### [158. API Versions/Deprecations](https://uklabs.kodekloud.com/topic/lab-api-versions-deprecations-2/)
     - [The Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)
     - [API Overview](https://kubernetes.io/docs/reference/using-api/)
     - [Kubernetes Deprecation Policy](https://kubernetes.io/docs/reference/using-api/deprecation-policy/)
@@ -786,7 +799,7 @@ root       15716  0.0  0.0 1343644 112936 ?      Ssl  19:50   0:00 kube-apiserve
 kubectl convert -f ingress-old.yaml --output-version networking.k8s.io/v1 > ingress-new.yaml
 ```
 
-### [Custom Resource Definition](https://uklabs.kodekloud.com/topic/practice-test-custom-resource-definition-2/)
+### [161. Custom Resource Definition](https://uklabs.kodekloud.com/topic/practice-test-custom-resource-definition-2/)
     - [Extend the Kubernetes API with CustomResourceDefinitions](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/)
 
 ```yaml
@@ -830,11 +843,11 @@ internals                           int          datasets.kodekloud.com/v1      
 ```
 
 ## Section 10: Helm Fundamentals
-### [Install Helm](https://uklabs.kodekloud.com/topic/labs-install-helm-2/)
+### [166. Install Helm](https://uklabs.kodekloud.com/topic/labs-install-helm-2/)
 
 
 
-### [Helm Concepts](https://uklabs.kodekloud.com/topic/labs-helm-concepts-2/)
+### [169. Helm Concepts](https://uklabs.kodekloud.com/topic/labs-helm-concepts-2/)
 ```shell
 helm search hub wordpress
 helm repo add bitnami https://charts.bitnami.com/bitnami
