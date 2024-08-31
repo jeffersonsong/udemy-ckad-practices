@@ -226,6 +226,9 @@ k create secret generic db-secret --from-literal=DB_Host=sql01 \
   --from-literal=DB_User=root \
   --from-literal=DB_Password=password123
 
+k create secret tls webhook-server-tls --cert=/root/keys/webhook-server-tls.crt \ 
+  --key=/root/keys/webhook-server-tls.key -n webhook-demo
+
 k api-resources | grep secret   
 secrets                                          v1                                true         Secret
 ```
@@ -354,9 +357,8 @@ Taints:             node-role.kubernetes.io/control-plane:NoSchedule
 kubectl label nodes node01 color=blue
 ```
 
+Pod spec
 ```yaml
-spec:
-  template:
     spec:
       affinity:
         nodeAffinity:
@@ -370,30 +372,9 @@ spec:
 ```
 
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: red
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: red
-  template:
-    metadata:
-      labels:
-        app: red
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
             - matchExpressions:
               - key: node-role.kubernetes.io/control-plane
                 operator: Exists
-      containers:
-      - image: nginx
-        name: nginx
 ```
 
 ## Section 4: Multi-Container Pods
@@ -402,11 +383,8 @@ spec:
 [Pods with multiple containers](https://kubernetes.io/docs/concepts/workloads/pods/#how-pods-manage-multiple-containers)
 [Communicate Between Containers in the Same Pod Using a Shared Volume](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/)
 
+Pod Spec
 ```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: yellow
 spec:
   containers:
   - image: busybox
@@ -481,8 +459,6 @@ rabbit     107m         252Mi
 ## Section 6: POD Design
 ### [92. Labels, Selectors and Annotations](https://uklabs.kodekloud.com/topic/labels-and-selectors-2/)
 ```shell
-k get all --selector="env=prod"
-
 k get po --selector="env=prod,bu=finance,tier=frontend" 
 
 k get po --show-labels
@@ -537,8 +513,9 @@ frontend-v2   1/1     1            1           110s    webapp-color   kodekloud/
 ```
 
 ### [105. Jobs & CronJobs](https://uklabs.kodekloud.com/topic/jobs-and-cronjobs/)
-    - [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
-    - [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
+
+- [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
+- [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
 
 ```shell
 k create job throw-dice-job --image=kodekloud/throw-dice
@@ -970,7 +947,8 @@ kubectl create clusterrolebinding michelle-storage-admin --clusterrole=storage-a
 ```
 
 ### [151. Admission Controllers](https://uklabs.kodekloud.com/topic/labs-admission-controllers-5/)
-    - [Admission Controllers Reference](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/)
+
+- [Admission Controllers Reference](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/)
 
 ```shell
 k cluster-info dump | grep admission
@@ -1038,13 +1016,13 @@ k get mutatingwebhookconfiguration
 ```
 
 ### [158. API Versions/Deprecations](https://uklabs.kodekloud.com/topic/lab-api-versions-deprecations-2/)
-    - [The Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)
-    - [API Overview](https://kubernetes.io/docs/reference/using-api/)
-    - [Kubernetes Deprecation Policy](https://kubernetes.io/docs/reference/using-api/deprecation-policy/)
 
-[Kubernetes API Concepts](https://kubernetes.io/docs/reference/using-api/api-concepts/)
-[API Overview - Enabling or disabling API groups](https://kubernetes.io/docs/reference/using-api/#enabling-or-disabling)
-[Install and Set Up kubectl on Linux - Install kubectl convert plugin](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin)
+- [The Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)
+- [API Overview](https://kubernetes.io/docs/reference/using-api/)
+- [Kubernetes Deprecation Policy](https://kubernetes.io/docs/reference/using-api/deprecation-policy/)
+- [Kubernetes API Concepts](https://kubernetes.io/docs/reference/using-api/api-concepts/)
+- [API Overview - Enabling or disabling API groups](https://kubernetes.io/docs/reference/using-api/#enabling-or-disabling)
+- [Install and Set Up kubectl on Linux - Install kubectl convert plugin](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-convert-plugin)
 
 ```shell
 k api-resources | grep "deployments\|replicasets\|cronjobs\|customresourcedefinitions"
