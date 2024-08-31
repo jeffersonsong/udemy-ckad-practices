@@ -90,7 +90,7 @@ Inspect the Dockerfile in the webapp-color directory.
 ```shell
 docker build -h
 
-docker build --tag=webapp-color .
+docker build -t webapp-color .
 ```
 
 9. Run an instance of the image webapp-color and publish port 8080 on the container to 8282 on the host.
@@ -121,7 +121,6 @@ docker exec --help
 Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
 
 docker exec -it 94db58651d02 cat /etc/os-release
-
 PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
 NAME="Debian GNU/Linux"
 VERSION_ID="11"
@@ -150,7 +149,7 @@ Hint: Find a smaller base image for python:3.6. Make sure the final image is les
 - Image size less than 150MB.
 
 ```shell
-docker build --tag=webapp-color:lite .
+docker build -t webapp-color:lite .
 
 docker image ls webapp-color
 REPOSITORY     TAG       IMAGE ID       CREATED          SIZE

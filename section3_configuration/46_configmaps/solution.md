@@ -97,8 +97,7 @@ Events:  <none>
 - Data: APP_OTHER=disregard
 
 ```shell
-kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue --from-literal=APP_OT
-HER=disregard
+kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue --from-literal=APP_OTHER=disregard
 configmap/webapp-config-map created
 ```
 

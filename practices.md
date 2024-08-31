@@ -1,41 +1,107 @@
 # Kubernetes Certified Application Developer (CKAD) with Tests - Practice Tests
 
 ## Section 2: Core Concepts
+
 ### [19. Pods](https://uklabs.kodekloud.com/topic/pods-4/)
 
 ```shell
 k get po
+NAME            READY   STATUS    RESTARTS   AGE
+newpods-kp9jh   1/1     Running   0          54s
+
 k get po -o wide
+NAME            READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
+newpods-kp9jh   1/1     Running   0          2m8s   10.42.0.9    controlplane   <none>           <none>
+
 k describe po webapp
 
 k run nginx --image=nginx
-k run redis --image=redis123 --dry-run=client -o yaml > redis-pod.yaml
-k apply -f redis-pod.yaml
 
-k edit po redis
+k edit po nginx
 k replace --force -f /tmp/kubectl-edit-3603704817.yaml
 
-k delete pod webapp
+k delete pod nginx
+
+k expose pod redis --port=6379 --name=redis-service --type=ClusterIP
+
+k api-resources | grep pod
+pods                                po           v1                                true         Pod
 ```
 
 ### [23. ReplicaSets](https://uklabs.kodekloud.com/topic/replicasets-2/)
 
 ```shell
 k get rs
+NAME              DESIRED   CURRENT   READY   AGE
+new-replica-set   4         4         0       9s
+
 k describe rs new-replica-set
+```
+
+```shell
 k apply -f replicaset-definition-1.yaml
+```
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replicaset-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+```
+
+```shell
+k api-resources | grep replicaset
+replicasets                         rs           apps/v1                           true         ReplicaSet
+
 k edit rs new-replica-set 
+
 k delete rs replicaset-1
+
+k scale rs new-replica-set --replicas=4
+
+k expose rs nginx --port=80 --target-port=8000
 ```
 
 ### [25. Deployments](https://uklabs.kodekloud.com/topic/deployments-5/)
 
 ```shell
 k get deploy
-k create deployment httpd-frontend --image=httpd:2.4-alpine --replicas=3 --dry-run=client -o yaml > httpd-frontend-deployment.yaml
-k apply -f httpd-frontend-deployment.yaml 
-k scale deploy frontend-v2 --replicas=1
-k delete deploy frontend
+
+k create deployment httpd-frontend --image=httpd:2.4-alpine --replicas=3
+
+k get all
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/httpd-frontend-5bf76dfdf9-5nzsr   1/1     Running   0          4s
+pod/httpd-frontend-5bf76dfdf9-5zbgz   1/1     Running   0          4s
+pod/httpd-frontend-5bf76dfdf9-ghm6x   1/1     Running   0          4s
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/httpd-frontend   3/3     3            3           4s
+
+NAME                                        DESIRED   CURRENT   READY   AGE
+replicaset.apps/httpd-frontend-5bf76dfdf9   3         3         3       4s
+
+k scale deploy httpd-frontend --replicas=1
+
+k delete deploy httpd-frontend
+
+k expose deployment httpd-frontend --port=80 --target-port=8000
+
+k api-resources | grep deployment
+deployments                         deploy       apps/v1                           true         Deployment
 ```
 
 ### [30. Namespaces](https://uklabs.kodekloud.com/topic/namespaces-3/)
@@ -43,35 +109,72 @@ k delete deploy frontend
 ```shell
 k get ns
 k create ns dev-ns
+
+k api-resources | grep namespace 
+namespaces                          ns           v1                                false        Namespace
 ```
 
 ### [33. Imperative Commands](https://uklabs.kodekloud.com/topic/imperative-commands/)
 
-```shell
-k create ns dev-ns
-
-k run redis --image=redis:alpine --labels=tier=db
-k run custom-nginx --image=nginx --port=8080
-
-k create deploy webapp --image=kodekloud/webapp-color --replicas=3 
-
-k expose pod redis --port=6379 --name=redis-service --type=ClusterIP
-```
 
 ## Section 3: Configuration
+
 ### [38. Docker Images](https://uklabs.kodekloud.com/topic/practice-test-docker-images-2/)
 
 ```shell
 docker image ls
+
 docker image ls webapp-color
-docker build --tag=webapp-color .
+```
+
+Dockerfile
+```
+FROM python:3.6-alpine 
+RUN pip install flask
+COPY . /opt/
+EXPOSE 8080
+WORKDIR /opt
+ENTRYPOINT ["python", "app.py"]
+```
+
+```shell
+docker build -t webapp-color .
+
 docker run -p 8282:8080 webapp-color
-docker ps 
+
+docker ps
+
 docker exec -it 94db58651d02 cat /etc/os-release
 ```
 
 ### [42. Commands and Arguments](https://uklabs.kodekloud.com/topic/commands-and-arguments/)
 
+Dockerfile
+```
+FROM python:3.6-alpine
+RUN pip install flask
+COPY . /opt/
+EXPOSE 8080
+WORKDIR /opt
+ENTRYPOINT ["python", "app.py"]
+CMD ["--color", "red"]
+```
+
+webapp-color-pod.yaml
+```yaml
+apiVersion: v1 
+kind: Pod 
+metadata:
+  name: webapp-green
+  labels:
+      name: webapp-green 
+spec:
+  containers:
+  - name: simple-webapp
+    image: kodekloud/webapp-color
+    command: ["python", "app.py"]
+    args: ["--color", "pink"]
+```
 
 ### [46. ConfigMaps](https://uklabs.kodekloud.com/topic/configmaps-2/)
 
@@ -79,8 +182,20 @@ docker exec -it 94db58651d02 cat /etc/os-release
 
 ```shell
 k get cm
+
 k describe cm db-config
+
 kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue --from-literal=APP_OTHER=disregard
+
+k api-resources | grep configmap
+configmaps                          cm           v1                                true         ConfigMap
+```
+
+```yaml
+  containers:
+  - env:
+    - name: APP_COLOR
+      value: green
 ```
 
 ```yaml
@@ -104,10 +219,15 @@ kubectl create configmap webapp-config-map --from-literal=APP_COLOR=darkblue --f
 
 ```shell
 k get secret
+
 k describe secret dashboard-token 
-kubectl create secret generic db-secret --from-literal=DB_Host=sql01 \
+
+k create secret generic db-secret --from-literal=DB_Host=sql01 \
   --from-literal=DB_User=root \
   --from-literal=DB_Password=password123
+
+k api-resources | grep secret   
+secrets                                          v1                                true         Secret
 ```
 
 ```yaml
@@ -127,19 +247,25 @@ metadata:
   name: test-pod
 spec:
   securityContext: 
-    runAsUser: 1010
+    runAsUser: 1001
   containers:
   - name: web
-    image: ubuntu
     securityContext:
+      runAsUser: 1002
       capabilities:
-        add: ["SYS_TIME"]    
+        add: ["SYS_TIME"]
 ```
 
 ### [59. Service Acccount](https://uklabs.kodekloud.com/topic/service-account-2/)
 
+```shell
 k create sa dashboard-sa
+
 kubectl create token dashboard-sa
+
+k api-resources | grep serviceaccount
+serviceaccounts                     sa           v1                                true         ServiceAccount
+```
 
 [Configure Service Accounts for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)
 
@@ -153,6 +279,7 @@ spec:
 
 
 ### [62. Resource Requirements](https://uklabs.kodekloud.com/topic/resource-limits-2/)
+
 ```yaml
   containers:
   - args:
@@ -180,9 +307,23 @@ spec:
 
 ```shell
 kubectl taint nodes node01 spray=mortein:NoSchedule
+```
 
-k describe node controlplane
-Taints:             node-role.kubernetes.io/control-plane:NoSchedule
+```yaml
+apiVersion: v1
+kind: Node
+metadata:
+  annotations: {}
+  labels: {}
+  name: node01
+spec:
+  podCIDR: 10.244.1.0/24
+  podCIDRs:
+  - 10.244.1.0/24
+  taints:
+  - effect: NoSchedule
+    key: spray
+    value: mortein
 ```
 
 ```yaml
@@ -199,6 +340,11 @@ spec:
     operator: "Equal"
     value: "mortein"
     effect: "NoSchedule"
+```
+
+```shell
+k describe node controlplane
+Taints:             node-role.kubernetes.io/control-plane:NoSchedule
 ```
 
 ### [69. Node Affinity](https://uklabs.kodekloud.com/topic/node-affinity-3/)
@@ -252,8 +398,28 @@ spec:
 
 ## Section 4: Multi-Container Pods
 ### [77. Multi-Container Pods](https://uklabs.kodekloud.com/topic/multi-container-pods-3/)
-    - [Pods with multiple containers](https://kubernetes.io/docs/concepts/workloads/pods/#how-pods-manage-multiple-containers)
-    - [Communicate Between Containers in the Same Pod Using a Shared Volume](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/)
+
+[Pods with multiple containers](https://kubernetes.io/docs/concepts/workloads/pods/#how-pods-manage-multiple-containers)
+[Communicate Between Containers in the Same Pod Using a Shared Volume](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/)
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yellow
+spec:
+  containers:
+  - image: busybox
+    name: lemon
+  - image: redis
+    name: gold
+```
+
+```shell
+k get po yellow 
+NAME     READY   STATUS             RESTARTS     AGE
+yellow   1/2     CrashLoopBackOff   1 (4s ago)   10s
+```
 
 ### [79. Init Containers](https://uklabs.kodekloud.com/topic/init-containers-3/)
   
@@ -301,14 +467,24 @@ k logs webapp-2
 
 ```shell
 k top node
+NAME           CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+controlplane   270m         0%     1126Mi          0%        
+node01         23m          0%     303Mi           0%   
+
 k top pod
+NAME       CPU(cores)   MEMORY(bytes)   
+elephant   14m          32Mi            
+lion       1m           18Mi            
+rabbit     107m         252Mi   
 ```
 
 ## Section 6: POD Design
 ### [92. Labels, Selectors and Annotations](https://uklabs.kodekloud.com/topic/labels-and-selectors-2/)
 ```shell
 k get all --selector="env=prod"
+
 k get po --selector="env=prod,bu=finance,tier=frontend" 
+
 k get po --show-labels
 ```
 
@@ -334,7 +510,9 @@ spec:
 
 ### [97. Rolling Updates & Rollbacks](https://uklabs.kodekloud.com/topic/rolling-updates-rollbacks-2/)
 
+```shell
 kubectl set image deployment/frontend simple-webapp=kodekloud/webapp-color:v2
+```
 
 ```yaml
   strategy:
@@ -351,17 +529,31 @@ kubectl set image deployment/frontend simple-webapp=kodekloud/webapp-color:v2
 
 ### [101. Deployment strategies](https://uklabs.kodekloud.com/topic/practice-test-de…ent-strategies-2/)
 
+```shell
+k get deploy -o wide
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS     IMAGES                      SELECTOR
+frontend      5/5     5            5           5m25s   webapp-color   kodekloud/webapp-color:v1   app=frontend
+frontend-v2   1/1     1            1           110s    webapp-color   kodekloud/webapp-color:v2   app=frontend
+```
 
 ### [105. Jobs & CronJobs](https://uklabs.kodekloud.com/topic/jobs-and-cronjobs/)
     - [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/)
     - [CronJob](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/)
 
 ```shell
-k get job throw-dice-job
-k describe job throw-dice-job
 k create job throw-dice-job --image=kodekloud/throw-dice
+
+k get job throw-dice-job -w
+
+k describe job throw-dice-job
+
 k delete job throw-dice-job 
+
 k create cronjob throw-dice-cron-job --image=kodekloud/throw-dice --schedule="30 21 * * *"
+
+k api-resources | grep "job\|cronjob"
+cronjobs                            cj           batch/v1                          true         CronJob
+jobs                                             batch/v1                          true         Job
 ```
 
 ```yaml
@@ -391,23 +583,55 @@ spec:
 
 ```shell
 k get svc
+
 k get svc -o wide
+
 k get svc kubernetes --show-labels
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE   LABELS
+kubernetes   ClusterIP   10.43.0.1    <none>        443/TCP   26m   component=apiserver,provider=kubernetes
+
 k describe svc kubernetes 
+
+k api-resources | grep "service"     
+services                            svc          v1                                true         Service
+
+k create -f service-definition-1.yaml 
+```
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+  namespace: default
+spec:
+  ports:
+  - nodePort: 30080
+    port: 8080
+    targetPort: 8080
+  selector:
+    name: simple-webapp
+  type: NodePort
 ```
 
 ### [113. Ingress Networking - 1](https://uklabs.kodekloud.com/topic/ingress-networking-1/)
-    - [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
-       - [Ingress - Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types)
-       - [Ingress - The Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource)
-    - [kubectl create ingress](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_ingress/)
+
+[Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+  - [Ingress - Path types](https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types)
+  - [Ingress - The Ingress resource](https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource)
+[kubectl create ingress](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_create/kubectl_create_ingress/)
   
 ```shell
 k get ingress -A
+
 k describe ingress ingress-wear-watch -n app-space
+
 kubectl create ingress ingress-wear-watch   --rule="/wear*=wear-service:8080" \
   --rule="/watch*=video-service:8080" \ 
   --annotation nginx.ingress.kubernetes.io/rewrite-target=/ -n app-space
+
+k api-resources | grep ingress  
+ingresses                           ing          networking.k8s.io/v1              true         Ingress
 ```
 
 ```yaml
@@ -448,7 +672,11 @@ status:
 
 ```shell
 k get netpol -A
+
 k get pod --selector="name=payroll"
+
+k apply -f internal-policy.yaml 
+
 k describe netpol payroll-policy
 ```
 
@@ -489,8 +717,14 @@ spec:
 
 ```shell
 k get pv
+
 k get pvc
+
 k delete pvc claim-log-1 
+
+k api-resources | grep "persistentvolume"
+persistentvolumeclaims              pvc          v1                                true         PersistentVolumeClaim
+persistentvolumes                   pv           v1                                false        PersistentVolume
 ```
 
 ```yaml
@@ -526,6 +760,7 @@ spec:
   hostPath:
     path: /pv/log
 ```
+
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -562,7 +797,6 @@ spec:
   
 ### [130. Storage Class](https://uklabs.kodekloud.com/topic/storage-class-2/)
 
-
 [Configure a Pod to Use a PersistentVolume for Storage - Create a PersistentVolumeClaim](https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim)
 
 ```shell
@@ -570,7 +804,9 @@ k api-resources | grep storageclass
 storageclasses                      sc           storage.k8s.io/v1                 false        StorageClass
 
 k get sc
+
 k get sc local-storage 
+
 k describe sc
 ```
 
@@ -608,7 +844,9 @@ spec:
 
 ```shell
 vi delayed-volume-sc.yaml
+
 k create -f delayed-volume-sc.yaml 
+
 k get sc delayed-volume-sc
 ```
 
@@ -627,25 +865,62 @@ volumeBindingMode: WaitForFirstConsumer
 
 ```shell
 ls ~/.kube/config
+
 k config view
+
 k config view --kubeconfig=my-kube-config
+
 k config use-context research --kubeconfig=my-kube-config
+```
+
+```yaml
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://controlplane:6443
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
+current-context: kubernetes-admin@kubernetes
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: DATA+OMITTED
+    client-key-data: DATA+OMITTED
 ```
 
 ### [145. Role Based Access Controls](https://uklabs.kodekloud.com/topic/practice-test-ro…ccess-controls-4/)
 
 ```shell
 k cluster-info dump | grep authorization-mode
+                            "--authorization-mode=Node,RBAC",
 
 k get role
+
 k describe role kube-proxy -n kube-system
+Name:         kube-proxy
+Labels:       <none>
+Annotations:  <none>
+PolicyRule:
+  Resources   Non-Resource URLs  Resource Names  Verbs
+  ---------   -----------------  --------------  -----
+  configmaps  []                 [kube-proxy]    [get]
+
 
 k get rolebinding -n kube-system
+
 k describe rolebinding kube-proxy -n kube-system
 
 k auth can-i --as dev-user get pods
 
 kubectl create role developer --verb=list,create,delete,get --resource=pods
+
 kubectl create rolebinding dev-user-binding --role=developer --user=dev-user
 ```
 
@@ -679,6 +954,16 @@ rules:
 ```shell
 k get clusterrole,clusterrolebinding
 
+k describe clusterrole cluster-admin
+Name:         cluster-admin
+Labels:       kubernetes.io/bootstrapping=rbac-defaults
+Annotations:  rbac.authorization.kubernetes.io/autoupdate: true
+PolicyRule:
+  Resources  Non-Resource URLs  Resource Names  Verbs
+  ---------  -----------------  --------------  -----
+  *.*        []                 []              [*]
+             [*]                []              [*]
+
 kubectl create clusterrole storage-admin --verb=get,list,watch --resource=persistentvolumes,storageclasses
 
 kubectl create clusterrolebinding michelle-storage-admin --clusterrole=storage-admin --user=michelle
@@ -700,21 +985,31 @@ spec:
   - command:
     - kube-apiserver
     - --enable-admission-plugins=NodeRestriction
-
+```
+to
+```yaml
+spec:
+  containers:
+  - command:
+    - kube-apiserver
     - --enable-admission-plugins=NodeRestriction,NamespaceAutoProvision
     - --disable-admission-plugins=DefaultStorageClass
 ```
+
 ```shell
 ps -ef | grep kube-apiserver | grep admission-plugins
+root       14491   14278  0 18:46 ?        00:00:03 kube-apiserver --advertise-address=192.39.26.6 --allow-privileged=true --authorization-mode=Node,RBAC --client-ca-file=/etc/kubernetes/pki/ca.crt --enable-admission-plugins=NodeRestriction,NamespaceAutoProvision --disable-admission-plugins=DefaultStorageClass --enable-bootstrap-token-auth=true --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key --etcd-servers=https://127.0.0.1:2379 --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key --requestheader-allowed-names=front-proxy-client --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt --requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User --secure-port=6443 --service-account-issuer=https://kubernetes.default.svc.cluster.local --service-account-key-file=/etc/kubernetes/pki/sa.pub --service-account-signing-key-file=/etc/kubernetes/pki/sa.key --service-cluster-ip-range=10.96.0.0/12 --tls-cert-file=/etc/kubernetes/pki/apiserver.crt --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
 ```
 
 ### [154. Validating and Mutating Admission Controllers](https://uklabs.kodekloud.com/topic/labs-validating-and-mutating-admission-controllers-5/)
-    - [Dynamic Admission Control](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
+
+[Dynamic Admission Control](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
 
 ```shell
 kubectl create secret tls webhook-server-tls --cert=/root/keys/webhook-server-tls.crt --key=/root/keys/webhook-server-tls.key -n webhook-demo 
 ```
 
+webhook-configuration.yaml 
 ```yaml
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
@@ -766,6 +1061,9 @@ Starting to serve on 127.0.0.1:8001
 
 ```shell
 curl http://localhost:8001/apis/authorization.k8s.io
+```
+
+```json
 {
   "kind": "APIGroup",
   "apiVersion": "v1",
@@ -803,7 +1101,6 @@ kubectl convert -f ingress-old.yaml --output-version networking.k8s.io/v1 > ingr
     - [Extend the Kubernetes API with CustomResourceDefinitions](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/)
 
 ```yaml
----
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -838,6 +1135,7 @@ spec:
 
 ```shell
 k create -f crd.yaml 
+
 k api-resources | grep internals
 internals                           int          datasets.kodekloud.com/v1         true         Internal
 ```
@@ -845,17 +1143,38 @@ internals                           int          datasets.kodekloud.com/v1      
 ## Section 10: Helm Fundamentals
 ### [166. Install Helm](https://uklabs.kodekloud.com/topic/labs-install-helm-2/)
 
+```shell
+cat /etc/os-release 
+PRETTY_NAME="Ubuntu 22.04.4 LTS"
+NAME="Ubuntu"
 
+helm --help
+
+helm version
+```
 
 ### [169. Helm Concepts](https://uklabs.kodekloud.com/topic/labs-helm-concepts-2/)
 ```shell
 helm search hub wordpress
+
 helm repo add bitnami https://charts.bitnami.com/bitnami
+
 helm search repo joomla
+NAME            CHART VERSION   APP VERSION     DESCRIPTION                                       
+bitnami/joomla  20.0.4          5.1.2           DEPRECATED Joomla! is an award winning open sou...
+
 helm repo list
+NAME            URL                                                 
+bitnami         https://charts.bitnami.com/bitnami
+
 helm install bravo bitnami/drupal
+
 helm list
+NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
+bravo   default         1               2024-08-29 20:48:31.929059416 +0000 UTC deployed        drupal-20.0.1   11.0.1    
+
 helm uninstall bravo
+
 helm pull bitnami/apache --untar
 helm install mywebapp .
 ```

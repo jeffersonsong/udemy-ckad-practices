@@ -10,4 +10,4 @@ spec:
   - key: "spray"
     operator: "Equal"
     value: "mortein"
-    effect: "NoSchedule"     
+    effect: "NoSchedule"

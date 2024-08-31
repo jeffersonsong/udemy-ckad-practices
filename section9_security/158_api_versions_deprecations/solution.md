@@ -39,6 +39,8 @@ Starting to serve on 127.0.0.1:8001
 
 ```shell
 curl http://localhost:8001/apis/authorization.k8s.io
+```
+```json
 {
   "kind": "APIGroup",
   "apiVersion": "v1",
