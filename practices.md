@@ -272,6 +272,7 @@ serviceaccounts                     sa           v1                             
 
 [Configure Service Accounts for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)
 
+Pod Spec
 ```yaml
 spec:
   template:
@@ -283,6 +284,7 @@ spec:
 
 ### [62. Resource Requirements](https://uklabs.kodekloud.com/topic/resource-limits-2/)
 
+Container Spec
 ```yaml
   containers:
   - args:
@@ -329,6 +331,7 @@ spec:
     value: mortein
 ```
 
+Pod Spec
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -403,6 +406,7 @@ yellow   1/2     CrashLoopBackOff   1 (4s ago)   10s
   
 [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
 
+Pod Spec
 ```yaml
 spec:
   containers:
@@ -419,6 +423,7 @@ spec:
 
 [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
 
+Container Spec
 ```yaml
 spec:
   containers:
@@ -704,6 +709,7 @@ persistentvolumeclaims              pvc          v1                             
 persistentvolumes                   pv           v1                                false        PersistentVolume
 ```
 
+Pod Spec
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -720,6 +726,15 @@ spec:
   - name: log-volume
     hostPath:
       path: /var/log/webapp
+```
+
+Pod Spec
+```yaml
+spec:
+  volumes:
+  - name: log-volume
+    persistentVolumeClaim:
+      claimName: claim-log-1
 ```
 
 ```yaml
@@ -752,25 +767,6 @@ spec:
     requests:
       storage: 50Mi
 ```
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: webapp
-spec:
-  containers:
-  - image: kodekloud/event-simulator
-    name: event-simulator
-    volumeMounts:
-    - mountPath: /log
-      name: log-volume
-  volumes:
-  - name: log-volume
-    persistentVolumeClaim:
-      claimName: claim-log-1
-```
-
   
 ### [130. Storage Class](https://uklabs.kodekloud.com/topic/storage-class-2/)
 
@@ -801,22 +797,12 @@ spec:
       storage: 500Mi
 ```
 
+Pod Spec
 ```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-spec:
   volumes:
   - name: pv-volume
     persistentVolumeClaim:
      claimName: local-pvc
-  containers:
-  - image: nginx:alpine
-    name: nginx
-    volumeMounts:
-    - mountPath: "/var/www/html"
-      name: pv-volume
 ```
 
 ```shell
